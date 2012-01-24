@@ -1,0 +1,25 @@
+#v0.3
+# Dev stuff
+Source/packages/
+[Aa]pp_[Dd]ata/
+[Bb]uilds/
+[Oo]bj/
+[Bb]in/
+[D]ebug/
+[Tt]est[Rr]esult/
+[Tt]emp/
+*.vspscc
+*.vssscc
+*.suo
+*.cache
+*.user
+*~
+_ReSharper.*
+*.resharper*
+*.[Rr]e[Ss]harper.user
+*.swp
+*.sdf
+*.orig
+
+#windows stuff
+Thumbs.db

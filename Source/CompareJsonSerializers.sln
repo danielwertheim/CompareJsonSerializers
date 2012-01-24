@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompareJsonSerializers", "CompareJsonSerializers\CompareJsonSerializers.csproj", "{9F5B7AF6-BDCA-4E90-8FAC-7F2B29F36E1A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F5B7AF6-BDCA-4E90-8FAC-7F2B29F36E1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F5B7AF6-BDCA-4E90-8FAC-7F2B29F36E1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F5B7AF6-BDCA-4E90-8FAC-7F2B29F36E1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F5B7AF6-BDCA-4E90-8FAC-7F2B29F36E1A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
