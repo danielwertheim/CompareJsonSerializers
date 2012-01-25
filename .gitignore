@@ -1,6 +1,5 @@
-#v0.3 (plus exclude of packages)
+#v0.3
 # Dev stuff
-Source/packages/
 [Aa]pp_[Dd]ata/
 [Bb]uilds/
 [Oo]bj/
