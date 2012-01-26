@@ -11,7 +11,7 @@ namespace CompareJsonSerializers
  
         static void Main(string[] args)
         {
-            var numberOfCustomers = 100;
+            var numberOfCustomers = 10000;
             var numberOfItterations = 5;
 
 			//_printer = ts => Console.WriteLine("TotalMilliseconds = {0}", ts.TotalMilliseconds);
