@@ -7,21 +7,26 @@ namespace CompareJsonSerializers
 {
     class Program
     {
+    	private static Action<TimeSpan> _printer;
+ 
         static void Main(string[] args)
         {
             var numberOfCustomers = 100;
             var numberOfItterations = 5;
 
+			//_printer = ts => Console.WriteLine("TotalMilliseconds = {0}", ts.TotalMilliseconds);
+			_printer = ts => Console.WriteLine("TotalSeconds = {0}", ts.TotalSeconds);
+			/*********************** Json.Net ***********************/
 			Console.WriteLine("Json.Net - Serializing");
 			TimeSerializationAction(SerializeUsingJsonNet, numberOfCustomers, numberOfItterations);
 			Console.WriteLine("Json.Net - Deserializing");
 			TimeDeserializationAction(Newtonsoft.Json.JsonConvert.SerializeObject, DeSerializeUsingJsonNet, numberOfCustomers, numberOfItterations);
-
+			/*********************** ServiceStack ***********************/
 			Console.WriteLine("ServiceStack.Text - Serializing");
 			TimeSerializationAction(SerializeUsingServiceStackText, numberOfCustomers, numberOfItterations);
 			Console.WriteLine("ServiceStack.Text - Deserializing");
 			TimeDeserializationAction(ServiceStack.Text.JsonSerializer.SerializeToString, DeserializeUsingServiceStackText, numberOfCustomers, numberOfItterations);
-
+			/*********************** fastJSON ***********************/
 			Console.WriteLine("fastJSon - Serializing");
 			TimeSerializationAction(SerializeUsingFastJson, numberOfCustomers, numberOfItterations);
 			Console.WriteLine("fastJson - Deserializing");
@@ -30,37 +35,37 @@ namespace CompareJsonSerializers
             Console.ReadKey();
         }
 
-		private static void SerializeUsingJsonNet(Customer[] customers)
+		private static int SerializeUsingJsonNet(Customer[] customers)
         {
-			var json = customers.Select(Newtonsoft.Json.JsonConvert.SerializeObject).ToArray();
+			return customers.Select(Newtonsoft.Json.JsonConvert.SerializeObject).ToArray().Length;
         }
 
-		private static void DeSerializeUsingJsonNet(string[] json)
+		private static int DeSerializeUsingJsonNet(string[] json)
         {
-			var customers = json.Select(Newtonsoft.Json.JsonConvert.DeserializeObject<Customer>).ToArray();
+			return json.Select(Newtonsoft.Json.JsonConvert.DeserializeObject<Customer>).ToArray().Length;
         }
 
-		private static void SerializeUsingServiceStackText(Customer[] customers)
+		private static int SerializeUsingServiceStackText(Customer[] customers)
         {
-			var json = customers.Select(ServiceStack.Text.JsonSerializer.SerializeToString).ToArray();
+			return customers.Select(ServiceStack.Text.JsonSerializer.SerializeToString).ToArray().Length;
         }
 
-		private static void DeserializeUsingServiceStackText(string[] json)
+		private static int DeserializeUsingServiceStackText(string[] json)
         {
-			var customers = json.Select(ServiceStack.Text.JsonSerializer.DeserializeFromString<Customer>).ToArray();
+			return json.Select(ServiceStack.Text.JsonSerializer.DeserializeFromString<Customer>).ToArray().Length;
         }
 
-		private static void SerializeUsingFastJson(Customer[] customers)
+		private static int SerializeUsingFastJson(Customer[] customers)
 		{
-			var json = customers.Select(fastJSON.JSON.Instance.ToJSON).ToArray();
+			return customers.Select(fastJSON.JSON.Instance.ToJSON).ToArray().Length;
 		}
 
-		private static void DeSerializeUsingFastJson(string[] json)
+		private static int DeSerializeUsingFastJson(string[] json)
 		{
-			var customers = json.Select(fastJSON.JSON.Instance.ToObject<Customer>).ToArray();
+			return json.Select(fastJSON.JSON.Instance.ToObject<Customer>).ToArray().Length;
 		}
 
-		private static void TimeSerializationAction(Action<Customer[]> action, int numOfCustomers, int numOfItterations)
+		private static void TimeSerializationAction(Func<Customer[], int> action, int numOfCustomers, int numOfItterations)
         {
 			var customers = CustomerFactory.CreateCustomers(numOfCustomers);
 			action(customers);
@@ -74,13 +79,13 @@ namespace CompareJsonSerializers
                 action(customers);
                 stopWatch.Stop();
 
-                Console.WriteLine("TotalSeconds = {0}", stopWatch.Elapsed.TotalSeconds);
+            	_printer(stopWatch.Elapsed);
 
                 stopWatch.Reset();
             }
         }
 
-        private static void TimeDeserializationAction(Func<Customer, string> serializer, Action<string[]> action, int numOfCustomers, int numOfItterations)
+        private static void TimeDeserializationAction(Func<Customer, string> serializer, Func<string[], int> action, int numOfCustomers, int numOfItterations)
         {
 			var customerJsons = CustomerFactory.CreateCustomers(numOfCustomers).Select(serializer).ToArray();
         	action(customerJsons);
@@ -94,7 +99,7 @@ namespace CompareJsonSerializers
                 action(customerJsons);
                 stopWatch.Stop();
 
-                Console.WriteLine("TotalSeconds = {0}", stopWatch.Elapsed.TotalSeconds);
+				_printer(stopWatch.Elapsed);
 
                 stopWatch.Reset();
             }
