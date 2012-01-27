@@ -17,20 +17,20 @@ namespace CompareJsonSerializers
 			//_printer = ts => Console.WriteLine("TotalMilliseconds = {0}", ts.TotalMilliseconds);
 			_printer = ts => Console.WriteLine("TotalSeconds = {0}", ts.TotalSeconds);
 			/*********************** Json.Net ***********************/
-			Console.WriteLine("Json.Net - Serializing");
-			TimeSerializationAction(SerializeUsingJsonNet, numberOfCustomers, numberOfItterations);
-			Console.WriteLine("Json.Net - Deserializing");
-			TimeDeserializationAction(Newtonsoft.Json.JsonConvert.SerializeObject, DeSerializeUsingJsonNet, numberOfCustomers, numberOfItterations);
+			//Console.WriteLine("Json.Net - Serializing");
+			//TimeSerializationAction(SerializeUsingJsonNet, numberOfCustomers, numberOfItterations);
+			//Console.WriteLine("Json.Net - Deserializing");
+			//TimeDeserializationAction(Newtonsoft.Json.JsonConvert.SerializeObject, DeSerializeUsingJsonNet, numberOfCustomers, numberOfItterations);
 			/*********************** ServiceStack ***********************/
-			Console.WriteLine("ServiceStack.Text - Serializing");
-			TimeSerializationAction(SerializeUsingServiceStackText, numberOfCustomers, numberOfItterations);
-			Console.WriteLine("ServiceStack.Text - Deserializing");
-			TimeDeserializationAction(ServiceStack.Text.JsonSerializer.SerializeToString, DeserializeUsingServiceStackText, numberOfCustomers, numberOfItterations);
+			//Console.WriteLine("ServiceStack.Text - Serializing");
+			//TimeSerializationAction(SerializeUsingServiceStackText, numberOfCustomers, numberOfItterations);
+			//Console.WriteLine("ServiceStack.Text - Deserializing");
+			//TimeDeserializationAction(ServiceStack.Text.JsonSerializer.SerializeToString, DeserializeUsingServiceStackText, numberOfCustomers, numberOfItterations);
 			/*********************** fastJSON ***********************/
-			Console.WriteLine("fastJSon - Serializing");
-			TimeSerializationAction(SerializeUsingFastJson, numberOfCustomers, numberOfItterations);
-			Console.WriteLine("fastJson - Deserializing");
-			TimeDeserializationAction(fastJSON.JSON.Instance.ToJSON, DeSerializeUsingFastJson, numberOfCustomers, numberOfItterations);
+			//Console.WriteLine("fastJSon - Serializing");
+			//TimeSerializationAction(SerializeUsingFastJson, numberOfCustomers, numberOfItterations);
+			//Console.WriteLine("fastJson - Deserializing");
+			//TimeDeserializationAction(fastJSON.JSON.Instance.ToJSON, DeSerializeUsingFastJson, numberOfCustomers, numberOfItterations);
 
             Console.ReadKey();
         }
