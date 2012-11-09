@@ -76,12 +76,12 @@ namespace CompareJsonSerializers
 
         private static void ConfServiceStack()
         {
-            //TypeConfig<Customer>.EnableAnonymousFieldSetters = true;
+            TypeConfig<Customer>.EnableAnonymousFieldSetters = true;
             JsConfig.DateHandler = JsonDateHandler.ISO8601;
             JsConfig.ExcludeTypeInfo = true;
             JsConfig.IncludeNullValues = true;
             JsConfig.IncludeTypeInfo = false;
-            //JsConfig.TryToParsePrimitiveTypeValues = true;
+            JsConfig.TryToParsePrimitiveTypeValues = true;
             JsConfig<Customer>.ExcludeTypeInfo = true;
             JsConfig<Customer>.IncludeTypeInfo = false;
         }
