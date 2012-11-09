@@ -28,11 +28,14 @@ namespace CompareJsonSerializers
  
         static void Main(string[] args)
         {
-            var numberOfCustomers = 1000;
-            var numberOfItterations = 5;
+            var numberOfCustomers = 1;
+            var numberOfItterations = 1000;
 
-			//_printer = ts => Console.WriteLine("TotalMilliseconds = {0}", ts.TotalMilliseconds);
-			_printer = ts => Console.WriteLine("TotalSeconds = {0}", ts.TotalSeconds);
+			_printer = ts =>
+			{
+			    Console.WriteLine("s = {0}", ts.TotalSeconds);
+                Console.WriteLine("ms = {0}", ts.TotalMilliseconds);
+			};
 			/*********************** Json.Net ***********************/
             Console.WriteLine("Json.Net - Serializing");
             TimeSerializationAction(SerializeUsingJsonNet, numberOfCustomers, numberOfItterations);
@@ -73,12 +76,12 @@ namespace CompareJsonSerializers
 
         private static void ConfServiceStack()
         {
-            TypeConfig<Customer>.EnableAnonymousFieldSetters = true;
+            //TypeConfig<Customer>.EnableAnonymousFieldSetters = true;
             JsConfig.DateHandler = JsonDateHandler.ISO8601;
             JsConfig.ExcludeTypeInfo = true;
             JsConfig.IncludeNullValues = true;
             JsConfig.IncludeTypeInfo = false;
-            JsConfig.TryToParsePrimitiveTypeValues = true;
+            //JsConfig.TryToParsePrimitiveTypeValues = true;
             JsConfig<Customer>.ExcludeTypeInfo = true;
             JsConfig<Customer>.IncludeTypeInfo = false;
         }
@@ -86,41 +89,43 @@ namespace CompareJsonSerializers
 		private static void TimeSerializationAction(Func<Customer[], int> action, int numOfCustomers, int numOfItterations)
         {
 			var customers = CustomerFactory.CreateCustomers(numOfCustomers);
-			action(customers);
-			GC.Collect();
-
+            GC.Collect();
+            action(customers); //Burn one
+			
             var stopWatch = new Stopwatch();
 
+		    var sum = new TimeSpan(0);
             for (var c = 0; c < numOfItterations; c++)
             {
                 stopWatch.Start();
                 action(customers);
                 stopWatch.Stop();
-
-            	_printer(stopWatch.Elapsed);
-
+                sum += stopWatch.Elapsed;
                 stopWatch.Reset();
             }
+
+            _printer(sum);
         }
 
         private static void TimeDeserializationAction(Func<Customer, string> serializer, Func<string[], int> action, int numOfCustomers, int numOfItterations)
         {
 			var customerJsons = CustomerFactory.CreateCustomers(numOfCustomers).Select(serializer).ToArray();
-        	action(customerJsons);
-			GC.Collect();
+            GC.Collect();
+            action(customerJsons); //Burn one
             
 			var stopWatch = new Stopwatch();
 
+            var sum = new TimeSpan(0);
             for (var c = 0; c < numOfItterations; c++)
             {
                 stopWatch.Start();
                 action(customerJsons);
                 stopWatch.Stop();
-
-				_printer(stopWatch.Elapsed);
-
+                sum += stopWatch.Elapsed;
                 stopWatch.Reset();
             }
+
+            _printer(sum);
         }
     }
 }
