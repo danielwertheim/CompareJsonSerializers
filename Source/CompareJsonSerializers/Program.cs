@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using CompareJsonSerializers.Model;
+using CompareJsonSerializers.SimpleJson;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ServiceStack.Text;
@@ -25,6 +26,8 @@ namespace CompareJsonSerializers
             NullValueHandling = NullValueHandling.Include,
             TypeNameHandling = TypeNameHandling.None
         };
+
+        private static IJsonSerializerStrategy _simpleJsonStrategy = new SimpleJsonSerializerStrategy(); //To get support for ENUM
  
         static void Main(string[] args)
         {
@@ -35,7 +38,13 @@ namespace CompareJsonSerializers
 			{
 			    Console.WriteLine("s = {0}", ts.TotalSeconds);
                 Console.WriteLine("ms = {0}", ts.TotalMilliseconds);
+                Console.WriteLine();
 			};
+            /*********************** SimpleJson ***********************/
+            Console.WriteLine("SimpleJson - Serializing");
+            TimeSerializationAction(SerializeUsingSimpleJson, numberOfCustomers, numberOfItterations);
+            Console.WriteLine("SimpleJson - Deserializing");
+            TimeDeserializationAction(SimpleJson.SimpleJson.SerializeObject, DeSerializeUsingSimpleJson, numberOfCustomers, numberOfItterations);
 			/*********************** Json.Net ***********************/
             Console.WriteLine("Json.Net - Serializing");
             TimeSerializationAction(SerializeUsingJsonNet, numberOfCustomers, numberOfItterations);
@@ -48,6 +57,16 @@ namespace CompareJsonSerializers
             TimeDeserializationAction(ServiceStack.Text.JsonSerializer.SerializeToString, DeserializeUsingServiceStackText, numberOfCustomers, numberOfItterations);
 
             Console.ReadKey();
+        }
+
+        private static int SerializeUsingSimpleJson(Customer[] customers)
+        {
+            return customers.Select(s => SimpleJson.SimpleJson.SerializeObject(s, _simpleJsonStrategy)).ToArray().Length;
+        }
+
+        private static int DeSerializeUsingSimpleJson(string[] json)
+        {
+            return json.Select(s => SimpleJson.SimpleJson.DeserializeObject<Customer>(s, _simpleJsonStrategy)).ToArray().Length;
         }
 
 		private static int SerializeUsingJsonNet(Customer[] customers)
