@@ -34,6 +34,10 @@ namespace CompareJsonSerializers
             var numberOfCustomers = 1;
             var numberOfItterations = 1000;
 
+            Console.WriteLine("Num of customers: {0}", numberOfCustomers);
+            Console.WriteLine("Num of itterations: {0}", numberOfItterations);
+            Console.WriteLine();
+
 			_printer = ts =>
 			{
 			    Console.WriteLine("s = {0}", ts.TotalSeconds);
